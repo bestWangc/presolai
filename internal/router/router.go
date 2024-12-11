@@ -18,7 +18,6 @@ func InitRouter() *gin.Engine {
 		userRoutes.GET("/", controllers.GetUsers)
 		userRoutes.GET("/:id", controllers.GetUser)
 		userRoutes.POST("/", controllers.CreateUser)
-		userRoutes.PUT("/:id", controllers.UpdateUser)
 	}
 
 	return r
