@@ -37,6 +37,6 @@ func loadConfig() *Config{
 	return config
 }
 
-func init (){
+func Init (){
 	EnvConfig = loadConfig()
 }
