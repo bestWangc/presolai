@@ -56,13 +56,15 @@ func GetUser(c *gin.Context) {
 // @Produce json
 // @Param username body string true "用户名"
 // @Param addr body string true "用户地址"
+// @Param inviteCode body string true "邀请码"
 // @Success 200 {object} models.User
 // @Router /users [post]
 func CreateUser(c *gin.Context) {
 
 	var request struct {
-		Username string `json:"username" binding:"required"`
-		Addr     string `json:"addr" binding:"required"`
+		Username   string `json:"username" binding:"required"`
+		Addr       string `json:"addr" binding:"required"`
+		InviteCode string `json:"invite_code"`
 	}
 
 	if err := c.ShouldBindJSON(&request); err != nil {
@@ -86,7 +88,7 @@ func CreateUser(c *gin.Context) {
 		return
 	}
 
-	createdUser, err := userService.CreateUser(request.Username, request.Addr)
+	createdUser, err := userService.CreateUser(request.Username, request.Addr,request.InviteCode)
 	if err != nil {
 		response.Error(c, http.StatusInternalServerError, "Failed to create user")
 		return

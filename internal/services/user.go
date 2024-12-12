@@ -29,17 +29,20 @@ func (userService *UserService) GetUserByID(id string) (models.User, error) {
 }
 
 // CreateUser 创建一个新用户
-func (userService *UserService) CreateUser(username string, addr string) (*models.User, error) {
+func (userService *UserService) CreateUser(username string, addr string, inviteCode string) (*models.User, error) {
 	if username == "" || addr == "" {
 		return nil, errors.New("username and address cannot be empty")
 	}
 
 	//生成邀请码
-	invateCode, _ := tools.GenerateInviteCode(8)
+	if inviteCode == "" {
+		inviteCode = tools.GenerateInviteCode(8)
+	}
+
 	newUser := models.User{
 		Username:   username,
 		Addr:       addr,
-		InviteCode: invateCode,
+		InviteCode: inviteCode,
 	}
 
 	if err := mysql.DB.Create(&newUser).Error; err != nil {
@@ -50,7 +53,7 @@ func (userService *UserService) CreateUser(username string, addr string) (*model
 
 // UpdateUser 更新用户
 func (userService *UserService) UpdateUser(id string, username string) (bool, error) {
-    if err := mysql.DB.Model(&models.User{}).Where("id = ?", id).Update("username", username).Error; err != nil {
+	if err := mysql.DB.Model(&models.User{}).Where("id = ?", id).Update("username", username).Error; err != nil {
 		return false, err // 返回失败和错误
 	}
 	return true, nil
@@ -64,11 +67,11 @@ func (userService *UserService) DeleteUser(id string) error {
 	return nil
 }
 
-func (userService *UserService) AddressExists(addr string) (bool,error) {
-    var user models.User
-    result := mysql.DB.Where("addr = ?",addr).First(&user)
-    if result.Error != nil && result.Error != gorm.ErrRecordNotFound {
-        return false, result.Error
-    }
-    return result.RowsAffected > 0, nil
+func (userService *UserService) AddressExists(addr string) (bool, error) {
+	var user models.User
+	result := mysql.DB.Where("addr = ?", addr).First(&user)
+	if result.Error != nil && result.Error != gorm.ErrRecordNotFound {
+		return false, result.Error
+	}
+	return result.RowsAffected > 0, nil
 }

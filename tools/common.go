@@ -156,7 +156,7 @@ func CreateFileByTmplContent(filePath, templateContent, moduleName string) error
 	return nil
 }
 
-func GenerateInviteCode(length int) (string, error) {
+func GenerateInviteCode(length int) string {
 	// 定义字符集：大写字母A-Z和数字0-9
 	characters := "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 	var inviteCode string
@@ -165,11 +165,11 @@ func GenerateInviteCode(length int) (string, error) {
 		// 生成一个随机数，范围为0到字符集长度-1
 		index, err := rand.Int(rand.Reader, big.NewInt(int64(len(characters))))
 		if err != nil {
-			return "", err
+			return ""
 		}
 		// 通过索引从字符集中获取一个字符
 		inviteCode += string(characters[index.Int64()])
 	}
 
-	return inviteCode, nil
+	return inviteCode
 }
