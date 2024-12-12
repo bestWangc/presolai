@@ -88,3 +88,12 @@ func (userService *UserService) AddressExists(addr string) (bool, error) {
 	}
 	return result.RowsAffected > 0, nil
 }
+
+func (userService *UserService) UsernameExists(username string) (bool, error) {
+	var user models.User
+	result := mysql.DB.Where("username = ?", username).First(&user)
+	if result.Error != nil && result.Error != gorm.ErrRecordNotFound {
+		return false, result.Error
+	}
+	return result.RowsAffected > 0, nil
+}

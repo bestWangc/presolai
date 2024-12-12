@@ -78,13 +78,20 @@ func CreateUser(c *gin.Context) {
 		return
 	}
 	//判断地址是否存在
-	exists, err := userService.AddressExists(request.Addr)
-	if err != nil {
+	if exists, err := userService.AddressExists(request.Addr); err != nil {
 		response.Error(c, http.StatusInternalServerError, "Failed to check address")
 		return
-	}
-	if exists {
+	} else if exists {
 		response.Error(c, http.StatusConflict, "Address already exists")
+		return
+	}
+
+	//username不能重复
+	if nameExists, err := userService.UsernameExists(request.Username); err != nil {
+		response.Error(c, http.StatusInternalServerError, "Failed to check username")
+		return
+	} else if nameExists {
+		response.Error(c, http.StatusConflict, "Username already exists")
 		return
 	}
 
