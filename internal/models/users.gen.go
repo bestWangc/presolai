@@ -18,6 +18,7 @@ type User struct {
 	InviteCode string    `gorm:"column:invite_code;not null;comment:邀请码" json:"invite_code"` // 邀请码
 	CreatedAt  time.Time `gorm:"column:created_at" json:"created_at"`
 	UpdatedAt  time.Time `gorm:"column:updated_at" json:"updated_at"`
+	InviteUID  int32     `gorm:"column:invite_uid;not null;comment:邀请人uid" json:"invite_uid"` // 邀请人uid
 }
 
 // TableName User's table name

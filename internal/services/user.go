@@ -2,6 +2,7 @@ package services
 
 import (
 	"errors"
+	"fmt"
 	"presolai/internal/models"
 	"presolai/internal/pkg/mysql"
 	"presolai/tools"
@@ -29,23 +30,35 @@ func (userService *UserService) GetUserByID(id string) (models.User, error) {
 }
 
 // CreateUser 创建一个新用户
-func (userService *UserService) CreateUser(username string, addr string, inviteCode string) (*models.User, error) {
+func (userService *UserService) CreateUser(username string, addr string, inviteUserCode string) (*models.User, error) {
 	if username == "" || addr == "" {
 		return nil, errors.New("username and address cannot be empty")
 	}
 
-	//生成邀请码
-	if inviteCode == "" {
-		inviteCode = tools.GenerateInviteCode(8)
+	db := mysql.DB
+	var inviteUID int32 = 0;
+	if inviteUserCode != "" {
+		//根据邀请码查询邀请人id
+		var user models.User
+		inviteUser := db.Where("invite_code = ?", inviteUserCode).First(&user)
+
+		//邀请人未查到 给inviteUID 赋值
+		if inviteUser.Error == nil {
+			inviteUID = user.ID
+		}
 	}
 
+	//生成邀请码
+	inviteCode := tools.GenerateInviteCode(8)
 	newUser := models.User{
 		Username:   username,
 		Addr:       addr,
 		InviteCode: inviteCode,
+		InviteUID: inviteUID,
 	}
+	fmt.Println(newUser);
 
-	if err := mysql.DB.Create(&newUser).Error; err != nil {
+	if err := db.Create(&newUser).Error; err != nil {
 		return &newUser, err
 	}
 	return &newUser, nil
