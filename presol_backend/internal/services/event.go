@@ -9,12 +9,22 @@ import (
 
 type EventService struct{}
 
-func (eventService *EventService) GetAllUsers() ([]models.User, error) {
-	var users []models.User
-	if err := mysql.DB.Find(&users).Error; err != nil {
+type EventSummary struct {
+	ID       int32  `json:"id"`
+	UID      int32  `json:"uid"`
+	Tid      string `json:"tid"`
+	ImgURL   string `json:"img_url"`
+	Title    string `json:"title"`
+	Deadline int32  `json:"deadline"`
+	Desc     string `json:"desc"`
+}
+
+func (eventService *EventService) GetAllEvents() ([]EventSummary, error) {
+	var eventList []EventSummary
+	if err := mysql.DB.Model(&models.EventList{}).Find(&eventList).Error; err != nil {
 		return nil, err
 	}
-	return users, nil
+	return eventList, nil
 }
 
 // GetUserByID 根据 ID 获取用户
@@ -42,7 +52,7 @@ func (eventService *EventService) CreateEvent(uid string, addr string, title str
 		Title:    title,
 		Desc:     desc,
 		Deadline: int32(deadline),
-		ImgURL: img,
+		ImgURL:   img,
 	}
 
 	if err := db.Create(&newEvent).Error; err != nil {
@@ -50,3 +60,5 @@ func (eventService *EventService) CreateEvent(uid string, addr string, title str
 	}
 	return true, nil
 }
+
+

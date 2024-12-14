@@ -28,7 +28,7 @@ func InitRouter() *gin.Engine {
 
 	eventRoutes := r.Group("/event")
 	{
-		eventRoutes.GET("/", controllers.GetAllComments)
+		eventRoutes.GET("/", controllers.GetAllEvents)
 		eventRoutes.POST("/", controllers.CreateEvent)
 	}
 

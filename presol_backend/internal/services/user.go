@@ -64,21 +64,6 @@ func (userService *UserService) CreateUser(username string, addr string, inviteU
 	return &newUser, nil
 }
 
-// UpdateUser 更新用户
-func (userService *UserService) UpdateUser(id string, username string) (bool, error) {
-	if err := mysql.DB.Model(&models.User{}).Where("id = ?", id).Update("username", username).Error; err != nil {
-		return false, err // 返回失败和错误
-	}
-	return true, nil
-}
-
-// DeleteUser 删除用户
-func (userService *UserService) DeleteUser(id string) error {
-	if err := mysql.DB.Delete(&models.User{}, id).Error; err != nil {
-		return err
-	}
-	return nil
-}
 
 func (userService *UserService) AddressExists(addr string) (bool, error) {
 	var user models.User
@@ -92,6 +77,15 @@ func (userService *UserService) AddressExists(addr string) (bool, error) {
 func (userService *UserService) UsernameExists(username string) (bool, error) {
 	var user models.User
 	result := mysql.DB.Where("username = ?", username).First(&user)
+	if result.Error != nil && result.Error != gorm.ErrRecordNotFound {
+		return false, result.Error
+	}
+	return result.RowsAffected > 0, nil
+}
+
+func (userService *UserService) UidExists(uid string) (bool, error) {
+	var user models.User
+	result := mysql.DB.Where("id = ?", uid).First(&user)
 	if result.Error != nil && result.Error != gorm.ErrRecordNotFound {
 		return false, result.Error
 	}

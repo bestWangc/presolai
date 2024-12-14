@@ -1,0 +1,1584 @@
+{
+  "version": "0.1.0",
+  "name": "market",
+  "instructions": [
+    {
+      "name": "createMarket",
+      "accounts": [
+        {
+          "name": "creator",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "market",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "yesMint",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "noMint",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "yesVault",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "noVault",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "lpMint",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "creatorTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "marketVault",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "quoteMint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "rent",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "marketId",
+          "type": "publicKey"
+        },
+        {
+          "name": "bumps",
+          "type": {
+            "defined": "MarketBumps"
+          }
+        },
+        {
+          "name": "params",
+          "type": {
+            "defined": "MarketParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "trade",
+      "accounts": [
+        {
+          "name": "trader",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "market",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "traderSolAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "traderOutcomeAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "marketSolVault",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "marketOutcomeVault",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "outcomeMint",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": "TradeParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "addLiquidity",
+      "accounts": [
+        {
+          "name": "provider",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "market",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "providerSolAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "providerOutcomeAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "marketSolVault",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "marketOutcomeVault",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "params",
+          "type": {
+            "defined": "LiquidityParams"
+          }
+        }
+      ]
+    },
+    {
+      "name": "executePredation",
+      "accounts": [
+        {
+          "name": "predator",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "market",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "predatorMint",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "victimMint",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "predatorSolVault",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "victimSolVault",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "predatorSide",
+          "type": {
+            "defined": "Outcome"
+          }
+        }
+      ]
+    },
+    {
+      "name": "executeLaunch",
+      "accounts": [
+        {
+          "name": "launcher",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "market",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "ammProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "amm",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "ammAuthority",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "ammOpenOrders",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "ammLpMint",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "winnerMint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "solMint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "winnerVault",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "solVault",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "ammTargetOrders",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "ammConfig",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "createFeeDestination",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "marketProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "marketAccount",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "launcherLpAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "associatedTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "rent",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "winnerSide",
+          "type": {
+            "defined": "Outcome"
+          }
+        },
+        {
+          "name": "nonce",
+          "type": "u8"
+        },
+        {
+          "name": "openTime",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "settleMarket",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "market",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "winnerMint",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "loserMint",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "winnerTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "marketSolVault",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "lpMint",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "dexProgram",
+          "isMut": true,
+          "isSigner": false,
+          "isOptional": true
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "outcome",
+          "type": {
+            "defined": "Outcome"
+          }
+        }
+      ]
+    },
+    {
+      "name": "pauseMarket",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "market",
+          "isMut": true,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "unpauseMarket",
+      "accounts": [
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "market",
+          "isMut": true,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Market",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "marketId",
+            "type": "publicKey"
+          },
+          {
+            "name": "creator",
+            "type": "publicKey"
+          },
+          {
+            "name": "oracle",
+            "type": "publicKey"
+          },
+          {
+            "name": "tradingModel",
+            "type": {
+              "defined": "TradingModel"
+            }
+          },
+          {
+            "name": "question",
+            "type": "string"
+          },
+          {
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "name": "creationTime",
+            "type": "i64"
+          },
+          {
+            "name": "tradingEndTime",
+            "type": "i64"
+          },
+          {
+            "name": "resolutionTime",
+            "type": "i64"
+          },
+          {
+            "name": "yesMint",
+            "type": "publicKey"
+          },
+          {
+            "name": "noMint",
+            "type": "publicKey"
+          },
+          {
+            "name": "quoteMint",
+            "type": "publicKey"
+          },
+          {
+            "name": "lpMint",
+            "type": "publicKey"
+          },
+          {
+            "name": "yesVault",
+            "type": "publicKey"
+          },
+          {
+            "name": "noVault",
+            "type": "publicKey"
+          },
+          {
+            "name": "yesReserve",
+            "type": "u64"
+          },
+          {
+            "name": "noReserve",
+            "type": "u64"
+          },
+          {
+            "name": "yesSupply",
+            "type": "u64"
+          },
+          {
+            "name": "noSupply",
+            "type": "u64"
+          },
+          {
+            "name": "virtualYesSol",
+            "type": "u64"
+          },
+          {
+            "name": "virtualNoSol",
+            "type": "u64"
+          },
+          {
+            "name": "launchTime",
+            "type": "i64"
+          },
+          {
+            "name": "ammPool",
+            "type": "publicKey"
+          },
+          {
+            "name": "kingSide",
+            "type": {
+              "option": {
+                "defined": "Outcome"
+              }
+            }
+          },
+          {
+            "name": "kingClaimedTime",
+            "type": "i64"
+          },
+          {
+            "name": "lastPredationTime",
+            "type": "i64"
+          },
+          {
+            "name": "yesK",
+            "type": "u64"
+          },
+          {
+            "name": "noK",
+            "type": "u64"
+          },
+          {
+            "name": "status",
+            "type": {
+              "defined": "MarketStatus"
+            }
+          },
+          {
+            "name": "outcome",
+            "type": {
+              "option": {
+                "defined": "Outcome"
+              }
+            }
+          },
+          {
+            "name": "fixedPrice",
+            "type": {
+              "option": "u64"
+            }
+          },
+          {
+            "name": "creatorFee",
+            "type": "u16"
+          },
+          {
+            "name": "protocolFee",
+            "type": "u16"
+          },
+          {
+            "name": "totalYesVolume",
+            "type": "u64"
+          },
+          {
+            "name": "totalNoVolume",
+            "type": "u64"
+          },
+          {
+            "name": "totalFees",
+            "type": "u64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    }
+  ],
+  "types": [
+    {
+      "name": "LiquidityParams",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "side",
+            "type": {
+              "defined": "Outcome"
+            }
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "UpdateMarketParams",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "creatorFee",
+            "type": {
+              "option": "u16"
+            }
+          },
+          {
+            "name": "protocolFee",
+            "type": {
+              "option": "u16"
+            }
+          },
+          {
+            "name": "tradingEndTime",
+            "type": {
+              "option": "i64"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "TradeParams",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "side",
+            "type": {
+              "defined": "Outcome"
+            }
+          },
+          {
+            "name": "tradeSide",
+            "type": {
+              "defined": "TradeSide"
+            }
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "minOutcomeTokens",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "MarketParams",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "tradingModel",
+            "type": {
+              "defined": "TradingModel"
+            }
+          },
+          {
+            "name": "question",
+            "type": "string"
+          },
+          {
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "name": "tradingEndTime",
+            "type": "i64"
+          },
+          {
+            "name": "resolutionTime",
+            "type": "i64"
+          },
+          {
+            "name": "creatorFee",
+            "type": "u16"
+          },
+          {
+            "name": "protocolFee",
+            "type": "u16"
+          },
+          {
+            "name": "fixedPrice",
+            "type": {
+              "option": "u64"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "MarketBumps",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "market",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "TradingModel",
+      "docs": [
+        "市场交易模式"
+      ],
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "FixedPrice"
+          },
+          {
+            "name": "FreeTrading"
+          },
+          {
+            "name": "PredatoryLaunch"
+          }
+        ]
+      }
+    },
+    {
+      "name": "MarketStatus",
+      "docs": [
+        "市场状态"
+      ],
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Created"
+          },
+          {
+            "name": "Active"
+          },
+          {
+            "name": "Trading"
+          },
+          {
+            "name": "Resolving"
+          },
+          {
+            "name": "Resolved"
+          },
+          {
+            "name": "Disputed"
+          },
+          {
+            "name": "Cancelled"
+          },
+          {
+            "name": "Paused"
+          },
+          {
+            "name": "KingClaimed"
+          },
+          {
+            "name": "Launched"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Outcome",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Yes"
+          },
+          {
+            "name": "No"
+          },
+          {
+            "name": "Invalid"
+          }
+        ]
+      }
+    },
+    {
+      "name": "TradeSide",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Buy"
+          },
+          {
+            "name": "Sell"
+          }
+        ]
+      }
+    }
+  ],
+  "events": [
+    {
+      "name": "FixedPriceMarketCreated",
+      "fields": [
+        {
+          "name": "market",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "creator",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "fixedPrice",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "timestamp",
+          "type": "i64",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "FreeTradingMarketCreated",
+      "fields": [
+        {
+          "name": "market",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "creator",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "virtualLiquidity",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "timestamp",
+          "type": "i64",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "PredatoryMarketCreated",
+      "fields": [
+        {
+          "name": "market",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "creator",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "virtualLiquidity",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "kingThreshold",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "launchThreshold",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "timestamp",
+          "type": "i64",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "MarketLaunched",
+      "fields": [
+        {
+          "name": "market",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "winnerSide",
+          "type": {
+            "defined": "Outcome"
+          },
+          "index": false
+        },
+        {
+          "name": "pool",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "initialPrice",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "initialLiquidity",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "timestamp",
+          "type": "i64",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "LiquidityAdded",
+      "fields": [
+        {
+          "name": "market",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "provider",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "side",
+          "type": {
+            "defined": "Outcome"
+          },
+          "index": false
+        },
+        {
+          "name": "amount",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "timestamp",
+          "type": "i64",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "PredationExecuted",
+      "fields": [
+        {
+          "name": "market",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "predatorSide",
+          "type": {
+            "defined": "Outcome"
+          },
+          "index": false
+        },
+        {
+          "name": "victimAmount",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "timestamp",
+          "type": "i64",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "MarketLaunched",
+      "fields": [
+        {
+          "name": "market",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "winnerSide",
+          "type": {
+            "defined": "Outcome"
+          },
+          "index": false
+        },
+        {
+          "name": "timestamp",
+          "type": "i64",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "PredationExecuted",
+      "fields": [
+        {
+          "name": "market",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "predatorSide",
+          "type": {
+            "defined": "Outcome"
+          },
+          "index": false
+        },
+        {
+          "name": "victimAmount",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "solPerToken",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "timestamp",
+          "type": "i64",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "MarketPaused",
+      "fields": [
+        {
+          "name": "market",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "authority",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "timestamp",
+          "type": "i64",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "MarketUnpaused",
+      "fields": [
+        {
+          "name": "market",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "authority",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "timestamp",
+          "type": "i64",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "MarketParamsUpdated",
+      "fields": [
+        {
+          "name": "market",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "authority",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "newParams",
+          "type": {
+            "defined": "UpdateMarketParams"
+          },
+          "index": false
+        },
+        {
+          "name": "timestamp",
+          "type": "i64",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "MarketSettled",
+      "fields": [
+        {
+          "name": "market",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "outcome",
+          "type": {
+            "defined": "Outcome"
+          },
+          "index": false
+        },
+        {
+          "name": "timestamp",
+          "type": "i64",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "FixedPriceSettlement",
+      "fields": [
+        {
+          "name": "market",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "totalPool",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "winnerSupply",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "solPerToken",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "protocolFee",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "creatorFee",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "timestamp",
+          "type": "i64",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "FreeTradingSettlement",
+      "fields": [
+        {
+          "name": "market",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "totalPool",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "winnerSupply",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "finalPrice",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "solPerToken",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "protocolFee",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "creatorFee",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "timestamp",
+          "type": "i64",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "PredatorySettlement",
+      "fields": [
+        {
+          "name": "market",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "totalPool",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "winnerSupply",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "dexLiquidity",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "initialPrice",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "protocolFee",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "creatorFee",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "timestamp",
+          "type": "i64",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "PredationExecuted",
+      "fields": [
+        {
+          "name": "market",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "predatorSide",
+          "type": {
+            "defined": "Outcome"
+          },
+          "index": false
+        },
+        {
+          "name": "victimAmount",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "solPerToken",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "timestamp",
+          "type": "i64",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "MarketLaunched",
+      "fields": [
+        {
+          "name": "market",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "winnerSide",
+          "type": {
+            "defined": "Outcome"
+          },
+          "index": false
+        },
+        {
+          "name": "totalSol",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "solPerToken",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "timestamp",
+          "type": "i64",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "TradeExecuted",
+      "fields": [
+        {
+          "name": "market",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "trader",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "side",
+          "type": {
+            "defined": "Outcome"
+          },
+          "index": false
+        },
+        {
+          "name": "tradeSide",
+          "type": {
+            "defined": "TradeSide"
+          },
+          "index": false
+        },
+        {
+          "name": "amount",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "tokens",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "timestamp",
+          "type": "i64",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "PredationTriggered",
+      "fields": [
+        {
+          "name": "market",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "side",
+          "type": {
+            "defined": "Outcome"
+          },
+          "index": false
+        },
+        {
+          "name": "reserve",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "timestamp",
+          "type": "i64",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "LaunchTriggered",
+      "fields": [
+        {
+          "name": "market",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "side",
+          "type": {
+            "defined": "Outcome"
+          },
+          "index": false
+        },
+        {
+          "name": "reserve",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "timestamp",
+          "type": "i64",
+          "index": false
+        }
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "InvalidEndTime",
+      "msg": "Invalid market end time"
+    },
+    {
+      "code": 6001,
+      "name": "FeeTooHigh",
+      "msg": "Fee too high"
+    },
+    {
+      "code": 6002,
+      "name": "MarketNotActive",
+      "msg": "Market not active"
+    },
+    {
+      "code": 6003,
+      "name": "MarketAlreadyResolved",
+      "msg": "Market already resolved"
+    },
+    {
+      "code": 6004,
+      "name": "InvalidStatusTransition",
+      "msg": "Invalid market status transition"
+    },
+    {
+      "code": 6005,
+      "name": "InsufficientBalance",
+      "msg": "Insufficient balance"
+    },
+    {
+      "code": 6006,
+      "name": "TradingEnded",
+      "msg": "Market trading ended"
+    },
+    {
+      "code": 6007,
+      "name": "Overflow",
+      "msg": "Arithmetic overflow"
+    },
+    {
+      "code": 6008,
+      "name": "SlippageExceeded",
+      "msg": "Slippage tolerance exceeded"
+    },
+    {
+      "code": 6009,
+      "name": "InvalidOracleResult",
+      "msg": "Invalid oracle result"
+    },
+    {
+      "code": 6010,
+      "name": "UnauthorizedAccess",
+      "msg": "Unauthorized permission"
+    },
+    {
+      "code": 6011,
+      "name": "InvalidPrice",
+      "msg": "Invalid price"
+    },
+    {
+      "code": 6012,
+      "name": "InvalidSide",
+      "msg": "Invalid side"
+    },
+    {
+      "code": 6013,
+      "name": "InvalidTradingModel",
+      "msg": "Invalid trading model"
+    },
+    {
+      "code": 6014,
+      "name": "InvalidTradeSide",
+      "msg": "Invalid trade side"
+    },
+    {
+      "code": 6015,
+      "name": "InvalidPredationTarget",
+      "msg": "Invalid predation target"
+    },
+    {
+      "code": 6016,
+      "name": "PredationCooldown",
+      "msg": "Predation cooldown active"
+    },
+    {
+      "code": 6017,
+      "name": "LaunchThresholdNotReached",
+      "msg": "Launch threshold not reached"
+    },
+    {
+      "code": 6018,
+      "name": "InvalidPoolState",
+      "msg": "Invalid pool state account"
+    },
+    {
+      "code": 6019,
+      "name": "ThresholdNotReached",
+      "msg": "Launch threshold not reached"
+    },
+    {
+      "code": 6020,
+      "name": "TradingNotEnded",
+      "msg": "Launch threshold not reached"
+    },
+    {
+      "code": 6021,
+      "name": "InvalidOutcome",
+      "msg": "Launch threshold not reached"
+    }
+  ]
+}
