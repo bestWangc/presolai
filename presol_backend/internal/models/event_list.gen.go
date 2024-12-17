@@ -13,7 +13,7 @@ const TableNameEventList = "event_list"
 // EventList mapped from table <event_list>
 type EventList struct {
 	ID        int32     `gorm:"column:id;primaryKey;autoIncrement:true" json:"id"`
-	UID       int32     `gorm:"column:uid;not null" json:"uid"`
+	Addr      string    `gorm:"column:addr;not null;comment:创建事件的地址" json:"addr"`         // 创建事件的地址
 	Tid       string    `gorm:"column:tid;not null;comment:事件的唯一标识" json:"tid"`           // 事件的唯一标识
 	ImgURL    string    `gorm:"column:img_url;not null;comment:事件的图片" json:"img_url"`     // 事件的图片
 	Title     string    `gorm:"column:title;not null;comment:事件的标题" json:"title"`         // 事件的标题

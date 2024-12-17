@@ -21,8 +21,8 @@ var eventService = new(services.EventService)
 // @Produce json
 // @Success 200 {object} models.User
 // @Router /users [get]
-func GetEvents(c *gin.Context) {
-	users, err := userService.GetAllUsers()
+func GetAllEvents(c *gin.Context) {
+	users, err := eventService.GetAllEvents()
 	if err != nil {
 		response.Error(c, http.StatusInternalServerError, "Failed to fetch users")
 		return
@@ -64,10 +64,7 @@ func GetEvent(c *gin.Context) {
 // @Router /comment [post]
 func CreateEvent(c *gin.Context) {
 
-	// TODO: 需要登陆
-
 	var request struct {
-		Uid      string `json:"uid" binding:"required"`
 		Addr     string `json:"addr" binding:"required"`
 		Title    string `json:"title" binding:"required"`
 		Desc     string `json:"desc" binding:"required"`
@@ -86,11 +83,11 @@ func CreateEvent(c *gin.Context) {
 		return
 	}
 
-	//判断用户是否签名
-	//判断用户余额
-	//发起交易  上链
-	//记录数据到数据库
+	//todo 判断用户是否签名
+	//todo 判断用户余额
+	//todo 发起交易  上链
 
+	//记录数据到数据库
 	fmt.Println(request.Deadline)
 	timeStr := c.DefaultQuery("time", "")
 	fmt.Println(timeStr);
@@ -100,9 +97,9 @@ func CreateEvent(c *gin.Context) {
 
 	fmt.Println(deadTimestamp)
 
-	createdEvent, err := eventService.CreateEvent(request.Uid, request.Addr, request.Title, request.Desc, deadTimestamp, request.Img)
+	createdEvent, err := eventService.CreateEvent(request.Addr, request.Title, request.Desc, deadTimestamp, request.Img)
 	if err != nil {
-		response.Error(c, http.StatusInternalServerError, "Failed to create user")
+		response.Error(c, http.StatusInternalServerError, "Failed to create event")
 		return
 	}
 	response.Success(c, createdEvent)

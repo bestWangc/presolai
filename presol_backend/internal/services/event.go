@@ -1,6 +1,7 @@
 package services
 
 import (
+	"fmt"
 	"presolai/internal/models"
 	"presolai/internal/pkg/mysql"
 	"strconv"
@@ -11,7 +12,7 @@ type EventService struct{}
 
 type EventSummary struct {
 	ID       int32  `json:"id"`
-	UID      int32  `json:"uid"`
+	Addr     string  `json:"addr"`
 	Tid      string `json:"tid"`
 	ImgURL   string `json:"img_url"`
 	Title    string `json:"title"`
@@ -36,29 +37,27 @@ func (eventService *EventService) GetUserByID(id string) (models.User, error) {
 	return user, nil
 }
 
-// CreateUser 创建一个新用户
-func (eventService *EventService) CreateEvent(uid string, addr string, title string, desc string, deadline int64, img string) (bool, error) {
+// CreateUser 创建一个新事件
+func (eventService *EventService) CreateEvent(addr string, title string, desc string, deadline int64, img string) (bool, error) {
 
 	db := mysql.DB
 
 	//生成tid
 	timestamp := time.Now().UnixNano() / int64(time.Millisecond)
 	timestampStr := strconv.FormatInt(timestamp, 10)
-	parsedUID, _ := strconv.ParseInt(uid, 10, 32)
 
 	newEvent := models.EventList{
-		UID:      int32(parsedUID),
 		Tid:      timestampStr,
+		Addr:     addr,
 		Title:    title,
 		Desc:     desc,
 		Deadline: int32(deadline),
 		ImgURL:   img,
 	}
+	fmt.Println(newEvent);
 
 	if err := db.Create(&newEvent).Error; err != nil {
 		return false, err
 	}
 	return true, nil
 }
-
-
