@@ -29,6 +29,7 @@ func InitRouter() *gin.Engine {
 	eventRoutes := r.Group("/event")
 	{
 		eventRoutes.GET("/", controllers.GetAllEvents)
+		eventRoutes.GET("/detail/:tid", controllers.GetEvent)
 		eventRoutes.POST("/", controllers.CreateEvent)
 	}
 

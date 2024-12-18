@@ -29,12 +29,13 @@ func (eventService *EventService) GetAllEvents() ([]EventSummary, error) {
 }
 
 // GetUserByID 根据 ID 获取用户
-func (eventService *EventService) GetUserByID(id string) (models.User, error) {
-	var user models.User
-	if err := mysql.DB.First(&user, id).Error; err != nil {
-		return user, err
+func (eventService *EventService) GetEventByTID(tid string) ([]EventSummary, error) {
+	var eventList []EventSummary
+	if err := mysql.DB.Model(&models.EventList{}).Where("tid = ?",tid).First(&eventList).Error; err != nil {
+		return nil, err
 	}
-	return user, nil
+	fmt.Println(eventList);
+	return eventList, nil
 }
 
 // CreateUser 创建一个新事件

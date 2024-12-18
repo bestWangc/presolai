@@ -40,14 +40,15 @@ func GetAllEvents(c *gin.Context) {
 // @Success 200 {object} models.User
 // @Router /users/:id [get]
 func GetEvent(c *gin.Context) {
-	id := c.Param("id")
-	user, err := userService.GetUserByID(id)
+	tid := c.Param("tid")
+	fmt.Println("tid",tid);
+	event, err := eventService.GetEventByTID(tid)
 	if err != nil {
-		response.Error(c, http.StatusNotFound, "User not found")
+		response.Error(c, http.StatusNotFound, "Event not found")
 		return
 	}
 
-	response.Success(c, user)
+	response.Success(c, event)
 }
 
 // CreateUser 创建一个新事件
