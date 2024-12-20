@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"context"
+	"encoding/base64"
 	"fmt"
 	"net/http"
 	"time"
@@ -8,6 +10,12 @@ import (
 	"presolai/internal/services"
 	"presolai/tools/response"
 
+	"github.com/davecgh/go-spew/spew"
+	"github.com/gagliardetto/solana-go"
+	"github.com/gagliardetto/solana-go/rpc"
+	confirm "github.com/gagliardetto/solana-go/rpc/sendAndConfirmTransaction"
+	"github.com/gagliardetto/solana-go/rpc/ws"
+	"github.com/gagliardetto/solana-go/types"
 	"github.com/gin-gonic/gin"
 )
 
@@ -84,7 +92,7 @@ func CreateEvent(c *gin.Context) {
 		return
 	}
 
-	//todo 判断用户是否签名
+	//todo 将用户的签名交易发送到链上
 	//todo 判断用户余额
 	//todo 发起交易  上链
 
@@ -104,4 +112,45 @@ func CreateEvent(c *gin.Context) {
 		return
 	}
 	response.Success(c, createdEvent)
+}
+
+func handleBroadcastTransaction(c *gin.Context) {
+	var request struct {
+		SignedTransaction string `json:"signedTransaction"`
+	}
+
+	// 解析请求体
+	if err := c.BindJSON(&request); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
+		return
+	}
+
+	//将前端的字节码还原成交易
+	tx := &solana.Transaction{}
+	if err := tx.UnmarshalBase64(request.SignedTransaction); err != nil {
+		fmt.Println("Failed to unmarshal transaction: %v", err)
+		return
+	}
+
+	// 创建客户端连接
+	rpcClient := rpc.New(rpc.DevNet_RPC)
+	fmt.Println(rpc.DevNet_RPC);
+
+	// Create a new WS client (used for confirming transactions)
+	wsClient, err := ws.Connect(context.Background(), rpc.DevNet_WS)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("ws 连接成功");
+	// 创建一个 Solana 交易对象
+	sig, err := confirm.SendAndConfirmTransaction(
+		context.TODO(),
+		rpcClient,
+		wsClient,
+		tx,
+	)
+	if err != nil {
+		panic(err)
+	}
+	spew.Dump(sig)
 }
