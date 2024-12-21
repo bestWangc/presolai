@@ -49,7 +49,7 @@ func GetAllEvents(c *gin.Context) {
 // @Router /users/:id [get]
 func GetEvent(c *gin.Context) {
 	tid := c.Param("tid")
-	fmt.Println("tid",tid);
+	fmt.Println("tid", tid)
 	event, err := eventService.GetEventByTID(tid)
 	if err != nil {
 		response.Error(c, http.StatusNotFound, "Event not found")
@@ -74,11 +74,12 @@ func GetEvent(c *gin.Context) {
 func CreateEvent(c *gin.Context) {
 
 	var request struct {
-		Addr     string `json:"addr" binding:"required"`
-		Title    string `json:"title" binding:"required"`
-		Desc     string `json:"desc" binding:"required"`
-		Deadline string `json:"deadline" binding:"required"`
-		Img      string `json:"img" binding:"required"`
+		Addr              string `json:"addr" binding:"required"`
+		Title             string `json:"title" binding:"required"`
+		Desc              string `json:"desc" binding:"required"`
+		Deadline          string `json:"deadline" binding:"required"`
+		Img               string `json:"img" binding:"required"`
+		SignedTransaction string `json:"signedTransaction"`
 	}
 
 	//将图片传到aws上 或者存本地服务器
@@ -92,16 +93,18 @@ func CreateEvent(c *gin.Context) {
 		return
 	}
 
-	//todo 将用户的签名交易发送到链上
-	//todo 判断用户余额
-	//todo 发起交易  上链
+	//将用户的签名交易发送到链上
+	if _, err := handleBroadcastTransaction(request.SignedTransaction); err != nil {
+		response.Error(c, http.StatusInternalServerError, "Failed to send transaction")
+		return
+	}
 
 	//记录数据到数据库
 	fmt.Println(request.Deadline)
 	timeStr := c.DefaultQuery("time", "")
-	fmt.Println(timeStr);
+	fmt.Println(timeStr)
 	const timeLayout = "2006-01-02 15:04:05"
-	parsedTime, _ := time.Parse(timeLayout,request.Deadline)
+	parsedTime, _ := time.Parse(timeLayout, request.Deadline)
 	deadTimestamp := parsedTime.Unix()
 
 	fmt.Println(deadTimestamp)
@@ -114,34 +117,24 @@ func CreateEvent(c *gin.Context) {
 	response.Success(c, createdEvent)
 }
 
-func handleBroadcastTransaction(c *gin.Context) {
-	var request struct {
-		SignedTransaction string `json:"signedTransaction"`
-	}
-
-	// 解析请求体
-	if err := c.BindJSON(&request); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
-		return
-	}
-
+func handleBroadcastTransaction(signedTransaction string) (bool, error) {
 	//将前端的字节码还原成交易
 	tx := &solana.Transaction{}
-	if err := tx.UnmarshalBase64(request.SignedTransaction); err != nil {
+	if err := tx.UnmarshalBase64(signedTransaction); err != nil {
 		fmt.Println("Failed to unmarshal transaction: %v", err)
-		return
+		return false, err
 	}
 
 	// 创建客户端连接
 	rpcClient := rpc.New(rpc.DevNet_RPC)
-	fmt.Println(rpc.DevNet_RPC);
+	fmt.Println(rpc.DevNet_RPC)
 
 	// Create a new WS client (used for confirming transactions)
 	wsClient, err := ws.Connect(context.Background(), rpc.DevNet_WS)
 	if err != nil {
-		panic(err)
+		return false, err
 	}
-	fmt.Println("ws 连接成功");
+	fmt.Println("ws 连接成功")
 	// 创建一个 Solana 交易对象
 	sig, err := confirm.SendAndConfirmTransaction(
 		context.TODO(),
@@ -150,7 +143,8 @@ func handleBroadcastTransaction(c *gin.Context) {
 		tx,
 	)
 	if err != nil {
-		panic(err)
+		return false, err
 	}
 	spew.Dump(sig)
+	return true, nil
 }
